@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>高考倒计时</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #000;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #days {
+            font-size: 50vh;  /* 使用视窗高度百分比 */
+            font-weight: 900;
+            color: #fff;
+            text-align: center;
+            line-height: 0.8;
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial Black', sans-serif;
+            width: 100%;
+            text-align: center;
+            transform: scale(1.1);  /* 轻微放大 */
+            letter-spacing: -5px;  /* 减少数字间距 */
+        }
+    </style>
+</head>
+<body>
+    <div id="days">--</div>
+
+    <script>
+        function getGaokaoDate() {
+            const now = new Date();
+            const currentYear = now.getFullYear();
+            const gaokaoDate = new Date(currentYear, 5, 7); // 6月7日
+            
+            if (now > gaokaoDate) {
+                return new Date(currentYear + 1, 5, 7);
+            }
+            return gaokaoDate;
+        }
+
+        function updateCountdown() {
+            const now = new Date();
+            const gaokaoDate = getGaokaoDate();
+            const diffTime = gaokaoDate - now;
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            
+            document.getElementById('days').textContent = diffDays;
+            
+            // 动态调整字体大小
+            const daysElement = document.getElementById('days');
+            const maxWidth = window.innerWidth * 0.9;
+            const maxHeight = window.innerHeight * 0.9;
+            
+            daysElement.style.fontSize = '50vh';
+            if(daysElement.scrollWidth > maxWidth) {
+                daysElement.style.fontSize = (maxWidth / diffDays.toString().length) + 'px';
+            }
+            if(daysElement.scrollHeight > maxHeight) {
+                daysElement.style.fontSize = (maxHeight * 0.9) + 'px';
+            }
+        }
+
+        // 初始化和窗口大小变化时调整
+        updateCountdown();
+        window.addEventListener('resize', updateCountdown);
+        setInterval(updateCountdown, 86400000); // 每天更新
+    </script>
+</body>
+</html>
