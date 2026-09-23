@@ -618,4 +618,24 @@
   });
 
   window.addEventListener('resize', function(){
-    
+    if (!resultEl.classList.contains('show')) return;
+    var spans = resultEl.querySelectorAll('span');
+    if (!spans.length) return;
+    var localMax = 2;
+    for (var i = 0; i < spans.length; i++){
+      if (spans[i].textContent.length > localMax) localMax = spans[i].textContent.length;
+    }
+    var fs = pickFontSize(spans.length, window.innerWidth, window.innerHeight, localMax);
+    for (var i = 0; i < spans.length; i++) spans[i].style.fontSize = fs + 'px';
+  });
+
+  // ============ 启动 ============
+  initStars();
+  buildStage();
+  step(16.7);
+  drawStars(0);
+  requestAnimationFrame(render);
+})();
+</script>
+</body>
+</html>
